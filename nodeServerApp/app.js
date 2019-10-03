@@ -17,8 +17,12 @@ var db;
 var app = express();
 dotenv.config();
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-jxbyu.mongodb.net/admin?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, { useNewUrlParser: true });
+var uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-jxbyu.mongodb.net/admin?retryWrites=true&w=majority`;
+var mongoParam = {
+  useNewUrlParser: true,
+  poolSize: 50
+};
+var client = new MongoClient(uri, mongoParam);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

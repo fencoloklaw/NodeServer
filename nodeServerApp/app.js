@@ -13,16 +13,24 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 
-var db;
+var mongoDB;
 var app = express();
 dotenv.config();
 
+//MongoDB Server information
 var uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-jxbyu.mongodb.net/admin?retryWrites=true&w=majority`;
 var mongoParam = {
   useNewUrlParser: true,
   poolSize: 50
 };
 var client = new MongoClient(uri, mongoParam);
+
+//connect to mongo database
+client.connect(err => {
+  assert.equal(null, err);
+  console.log('Connected successfully to server');
+  mongoDB = client.db
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -51,12 +59,6 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
-
-client.connect(err => {
-  assert.equal(null, err);
-  console.log('Connected successfully to server');
-  db = client.db
 });
 
 module.exports = app;
